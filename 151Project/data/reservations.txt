@@ -1,0 +1,4 @@
+date1,date2,room1,user1
+date1,date2,room2,user2
+date1,date2,room3,user3
+date1,date2,room4,user4
