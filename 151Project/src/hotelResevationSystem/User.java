@@ -3,8 +3,12 @@ package hotelResevationSystem;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+/**
+ * User method creates a user to be used with the HotelReservationSystem holding data about reservations
+ * @author Carl Shefcik
+ *
+ */
 public class User {
-	
 	private String userID;
 	private String password;
 	private String username;
@@ -19,24 +23,30 @@ public class User {
 		reservationIDs = new ArrayList<String>();
 	}
 	
-	public ArrayList<String> getReservations() {
-		return reservationIDs;
-	}
+	//Getter Methods
+	public ArrayList<String> getReservations() { return reservationIDs; }
+	public String getUsername() { return username; }
 	
+	/**
+	 * Checks to see of the password is correct
+	 * @param aPassword a String representing the password to be checked
+	 * @return true if the correct password, false otherwise
+	 */
 	public boolean correctPassword(String aPassword) {
 		if(password.equals(aPassword))
 			return true;
 		return false;
 	}
-	
-	public String getUsername() {
-		return username;
+
+	/**
+	 * Adds a reservation to the User object
+	 * @param reservationID the reservation ID as a string
+	 */
+	public void addReservation(String reservationID) {
+		reservationIDs.add(reservationID);
 	}
 	
-	public void addReservation(String reservationNumber) {
-		reservationIDs.add(reservationNumber);
-	}
-	
+	//Overridden HashCode method excluding the reservations as those can change
 	public int hashCode() {
 		HashSet<Object> temp = new HashSet<Object>() {{
 			add(userID);

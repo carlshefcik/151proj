@@ -62,7 +62,7 @@ public class HotelReservationSystem {
 			while((line = br.readLine()) != null) {
 				sop(line);
 				String[] userInfo = line.split(",");
-				
+				//creates a user checking if they are a Guest user or not
 				User tempUser = new User(userInfo[0],userInfo[1],userInfo[3],userInfo[4] == "Guest");
 				
 				//puts the user in users map for userID -> User object
@@ -71,6 +71,7 @@ public class HotelReservationSystem {
 				//puts the id's of all the reservations into the user object
 				if(userInfo.length > 4) {
 					for(int i=4; i < userInfo.length; i++) {
+						//adds the reservationID's the user has to the user object
 						tempUser.addReservation(userInfo[i]);
 					}
 				}
