@@ -1,35 +1,50 @@
 package hotelResevationSystem;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class User {
 	
-	private int userID;
+	private String userID;
 	private String password;
 	private String username;
-	private ArrayList<Reservation> reservations;
+	private boolean guestUser;
+	private ArrayList<String> reservationIDs;
 	
-	public User(int userID, String password, String username)
-	{
-		reservations = new ArrayList<Reservation>();
+	public User(String userID, String password, String username, boolean guestUser) {
+		this.userID = userID;
+		this.password = password;
+		this.username = username;
+		this.guestUser = guestUser;
+		reservationIDs = new ArrayList<String>();
 	}
 	
-	public ArrayList<Reservation> getReservations()
-	{
-		return reservations;
+	public ArrayList<String> getReservations() {
+		return reservationIDs;
 	}
 	
-	public boolean correctPassword(String aPassword)
-	{
+	public boolean correctPassword(String aPassword) {
 		if(password.equals(aPassword))
-		{
 			return true;
-		}
 		return false;
 	}
 	
-	public String getUsername()
-	{
+	public String getUsername() {
 		return username;
 	}
+	
+	public void addReservation(String reservationNumber) {
+		reservationIDs.add(reservationNumber);
+	}
+	
+	public int hashCode() {
+		HashSet<Object> temp = new HashSet<Object>() {{
+			add(userID);
+			add(password);
+			add(username);
+			add(guestUser);
+		}};
+		return temp.hashCode();
+	}
+	
 }

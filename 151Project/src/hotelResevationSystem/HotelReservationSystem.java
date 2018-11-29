@@ -4,23 +4,25 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class HotelReservationSystem {
 	
 //	private Room[] luxoryRooms;
 //	private Room[] economicRooms;
-//	private HashMap<User, Room> accounts;
+	private ArrayList<User> accounts;
 	
-	private HashMap<String, String> users;
-	private HashMap<Date, Reservation> reservations;
+	private HashMap<String, User> users;
+	private HashMap<String, Reservation> reservations;
 	
 	public HotelReservationSystem() {
+		users = new HashMap<>();
+		reservations = new HashMap<>();
 		loadReservations();
 		loadUsers();
 	}
 
-	
 	public HotelReservationSystem(int luxory, int economic)
 	{
 		// should just instantiate the variables and initialize the JFrame
@@ -31,8 +33,6 @@ public class HotelReservationSystem {
 //		}
 		loadReservations();
 	}
-	
-	
 	
 	public void loadReservations() {
 		sop("Loading Reservations: ");
@@ -60,9 +60,22 @@ public class HotelReservationSystem {
 			
 			String line;
 			while((line = br.readLine()) != null) {
-				System.out.println(line);
-				//put into instance variable
+				sop(line);
+				String[] userInfo = line.split(",");
+				
+				User tempUser = new User(userInfo[0],userInfo[1],userInfo[3],userInfo[4] == "Guest");
+				
+				//puts the user in users map for userID -> User object
+				users.put(userInfo[0], tempUser);
+				
+				//puts the id's of all the reservations into the user object
+				if(userInfo.length > 4) {
+					for(int i=4; i < userInfo.length; i++) {
+						tempUser.addReservation(userInfo[i]);
+					}
+				}
 			}
+			
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -72,5 +85,4 @@ public class HotelReservationSystem {
 	public void sop(Object o) {
 		System.out.println(o);
 	}
-
 }
