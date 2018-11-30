@@ -3,17 +3,16 @@ package hotelResevationSystem;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class HotelReservationSystem {
+	// static instantiation for the total rooms available
+	private static final String[] lUXORY_ROOMS = {"1","2","3","4","5","6","7","8","9","10"};
+	private static final String[] ECONOMIC_ROOMS = {"11","12","13","14","15","16","17","18","19","20"};
 	
-//	private Room[] luxoryRooms;
-//	private Room[] economicRooms;
-	private ArrayList<User> accounts;
-	
+	//stores user objects and gets the user by the userID
 	private HashMap<String, User> users;
+	//stores the reservation objects and is gotten by the reservationID
 	private HashMap<String, Reservation> reservations;
 	
 	public HotelReservationSystem() {
@@ -21,17 +20,6 @@ public class HotelReservationSystem {
 		reservations = new HashMap<>();
 		loadReservations();
 		loadUsers();
-	}
-
-	public HotelReservationSystem(int luxory, int economic)
-	{
-		// should just instantiate the variables and initialize the JFrame
-//		luxoryRooms = new Room[luxory];
-//		for(int i = 0; i < luxory ; i++)
-//		{
-//			luxoryRooms[i] = new Luxory();
-//		}
-		loadReservations();
 	}
 	
 	public void loadReservations() {
@@ -42,13 +30,20 @@ public class HotelReservationSystem {
 			
 			String line;
 			while((line = br.readLine()) != null) {
-				System.out.println(line);
+				sop(line);
+				String[] resInfo = line.split(",");
 				//put into instance variable
+				
+				Reservation tempRes = new Reservation(resInfo[0],resInfo[1],resInfo[2],resInfo[3],resInfo[4]);
+				
+				reservations.put(resInfo[0], tempRes);
+				
 			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+		sop(reservations);
 		sop("");
 	}
 	
