@@ -9,7 +9,8 @@ public class ReservationSystemTester {
 		System.out.println();
 
 		
-		HotelReservationSystem hs = new HotelReservationSystem();
+		HotelReservationSystem hrs = new HotelReservationSystem();
+		HotelReservationViewer hrv = new HotelReservationViewer(hrs);
 		
 	}
 

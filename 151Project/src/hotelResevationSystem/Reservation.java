@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Reservation object hods data on a specific reservation made and 
+ * Reservation object holds data on a specific reservation made and 
  * @author Carl Shefcik
  *
  */

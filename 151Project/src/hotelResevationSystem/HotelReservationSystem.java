@@ -5,6 +5,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.HashMap;
 
+/**
+ * HotelReservationSystem is the Model for the MVC
+ * @author Carl Sheficik
+ *
+ */
 public class HotelReservationSystem {
 	// static instantiation for the total rooms available
 	private static final String[] lUXORY_ROOMS = {"1","2","3","4","5","6","7","8","9","10"};
