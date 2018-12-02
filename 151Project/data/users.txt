@@ -1,1 +1,2 @@
-11111,carl,123,Guest,ReservationID
+11,carl1,123,Guest,ReservationID
+12,carl2,123,Manager,ReservationID

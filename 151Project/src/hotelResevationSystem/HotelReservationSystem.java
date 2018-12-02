@@ -17,6 +17,8 @@ public class HotelReservationSystem {
 	
 	//stores user objects and gets the user by the userID
 	private HashMap<String, User> users;
+	//stores managers objects and gets the manager by the userID
+	private HashMap<String, Manager> managers;
 	//stores the reservation objects and is gotten by the reservationID
 	private HashMap<String, Reservation> reservations;
 	
@@ -62,19 +64,29 @@ public class HotelReservationSystem {
 			while((line = br.readLine()) != null) {
 				sop(line);
 				String[] userInfo = line.split(",");
+				
 				//creates a user checking if they are a Guest user or not
-				User tempUser = new User(userInfo[0],userInfo[1],userInfo[3],userInfo[4] == "Guest");
+				if(userInfo[4] == "Guest") {
+					User tempUser = new User(userInfo[0],userInfo[1],userInfo[3]);
 				
-				//puts the user in users map for userID -> User object
-				users.put(userInfo[0], tempUser);
-				
-				//puts the id's of all the reservations into the user object
-				if(userInfo.length > 4) {
-					for(int i=4; i < userInfo.length; i++) {
-						//adds the reservationID's the user has to the user object
-						tempUser.addReservation(userInfo[i]);
+					//puts the user in users map for userID -> User object
+					users.put(userInfo[0], tempUser);
+					
+					//puts the id's of all the reservations into the user object
+					if(userInfo.length > 4) {
+						for(int i=4; i < userInfo.length; i++) {
+							//adds the reservationID's the user has to the user object
+							tempUser.addReservation(userInfo[i]);
+						}
 					}
+				} else if (userInfo[4] == "Manager") {
+					Manager tempManager = new Manager(userInfo[0],userInfo[1],userInfo[3]);
+					
+					//puts the Manager in managers map for userID -> Manager object
+					managers.put(userInfo[0], tempManager);
 				}
+				
+				
 			}
 			
 		}

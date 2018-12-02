@@ -12,14 +12,12 @@ public class User {
 	private String userID;
 	private String password;
 	private String username;
-	private boolean guestUser;
 	private ArrayList<String> reservationIDs;
 	
-	public User(String userID, String password, String username, boolean guestUser) {
+	public User(String userID, String password, String username) {
 		this.userID = userID;
 		this.password = password;
 		this.username = username;
-		this.guestUser = guestUser;
 		reservationIDs = new ArrayList<String>();
 	}
 	
@@ -52,7 +50,6 @@ public class User {
 			add(userID);
 			add(password);
 			add(username);
-			add(guestUser);
 		}};
 		return temp.hashCode();
 	}
