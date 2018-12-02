@@ -18,6 +18,8 @@ public class HotelReservationSystem {
 	private static final String[] lUXORY_ROOMS = {"1","2","3","4","5","6","7","8","9","10"};
 	private static final String[] ECONOMIC_ROOMS = {"11","12","13","14","15","16","17","18","19","20"};
 	
+	private User currentUser;
+	
 	//reference to the view
 	HotelReservationViewer hrv;
 	
@@ -48,6 +50,23 @@ public class HotelReservationSystem {
 	public void attachView(HotelReservationViewer hrv) {
 		this.hrv = hrv;
 	}
+	
+	/**
+	 * Logs the user in if the user and Id match
+	 * @param userID the id of the user
+	 * @param password the attempted user password
+	 * @return true if logged in, false if wrong password
+	 */
+	public boolean userLogin(String userID, String password) {
+		// maybe throw two different types of exceptions, one for no user and one for wrong password
+		if(users.get(userID).correctPassword(password)) {
+			//sets the current user and returns true
+			currentUser = users.get(userID);
+			return true;
+		}
+		return false;
+	}
+	
 	
 	/**
 	 * Changes the current card of the CardLayout to the specified ViewContent in the HRV 

@@ -2,11 +2,8 @@ package hotelResevationSystem;
 
 import java.awt.CardLayout;
 import java.awt.Container;
-import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 /**
  * HotelReservationViewer is the View of the MVC
@@ -23,32 +20,33 @@ public class HotelReservationViewer extends JFrame {
 		this.hrs = hrs;
 		setLocation(0,200);
 		MainMenu mainMenu = new MainMenu(hrs);
-		GuestLogin guest = new GuestLogin(hrs);
+		GuestLogin guestLogin = new GuestLogin(hrs);
+		GuestMenu guestMenu = new GuestMenu(hrs);
+		ManagerMenu managerMenu = new ManagerMenu(hrs);
+		MakeReservation makeReservation = new MakeReservation(hrs);
+		ViewReservations viewReservations = new ViewReservations(hrs);
+		ManagerLogin managerLogin = new ManagerLogin(hrs);
 
 		Container contentPane = this.getContentPane();
 		cardLayout = new CardLayout();
 
 		//this section should add every ViewContent to the contentPane
 		contentPane.setLayout(cardLayout);
-		contentPane.add(mainMenu, "MainMenu");
-		contentPane.add(guest, "Guest");
+		contentPane.add(mainMenu, "Main Menu");
+		
+		contentPane.add(managerLogin, "Manager Login");
+		contentPane.add(managerMenu, "Manager Menu");
+
+		contentPane.add(guestLogin, "Guest Login");
+		contentPane.add(guestMenu, "Guest Menu");
+		contentPane.add(makeReservation, "Make Reservation");
+		contentPane.add(viewReservations, "View Reservations");
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
 		setSize(600,400);
 		setVisible(true);
 		
-		//currently just switches between views
-		while (true) {
-		    try {
-		        Thread.sleep(1000);
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		    }
-		    //Switches to the guest view 
-		    //TO-DO add event listener to button that will transition to this
-		    cardLayout.show(contentPane, "Guest");
-		}
 	}
 	
 	/**

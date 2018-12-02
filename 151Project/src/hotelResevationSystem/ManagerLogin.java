@@ -4,13 +4,13 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
-public class GuestLogin extends ViewContent {
+public class ManagerLogin extends ViewContent {
 
-	public GuestLogin(HotelReservationSystem hrs) {
+	public ManagerLogin(HotelReservationSystem hrs) {
 		super(hrs);
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		JTextField tf = new JTextField();
-		tf.setText("Guest Login");
+		tf.setText("Manager Login");
 		
 		
 		add(tf);
@@ -23,7 +23,7 @@ public class GuestLogin extends ViewContent {
 		
 		
 		loginButton.addActionListener(e ->{
-			changeView("Guest Menu");
+			changeView("Manager Menu");
 		});
 		
 		backButton.addActionListener(e ->{
