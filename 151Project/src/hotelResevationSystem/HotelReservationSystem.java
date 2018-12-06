@@ -53,15 +53,21 @@ public class HotelReservationSystem {
 	
 	/**
 	 * Logs the user in if the user and Id match
+	 * @param manager User status (manager or guest)
 	 * @param userID the id of the user
 	 * @param password the attempted user password
 	 * @return true if logged in, false if wrong password
 	 */
-	public boolean userLogin(String userID, String password) {
+	public boolean userLogin(Boolean manager, String userID, String password) {
+		// maybe throw two different types of exceptions, one for no user and one for wrong password
 		try {
-			if(users.get(userID).correctPassword(password)) {
+			if(!manager&&users.get(userID).correctPassword(password)) {
 				//sets the current user and returns true
 				currentUser = users.get(userID);
+				return true;
+			}
+			else if(manager&&managers.get(userID).correctPassword(password)) {
+				currentUser = managers.get(userID);
 				return true;
 			}
 			return false;
