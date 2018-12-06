@@ -58,13 +58,17 @@ public class HotelReservationSystem {
 	 * @return true if logged in, false if wrong password
 	 */
 	public boolean userLogin(String userID, String password) {
-		// maybe throw two different types of exceptions, one for no user and one for wrong password
-		if(users.get(userID).correctPassword(password)) {
-			//sets the current user and returns true
-			currentUser = users.get(userID);
-			return true;
+		try {
+			if(users.get(userID).correctPassword(password)) {
+				//sets the current user and returns true
+				currentUser = users.get(userID);
+				return true;
+			}
+			return false;
 		}
-		return false;
+		catch(NullPointerException e) {
+			return false;
+		}
 	}
 	
 	
@@ -97,7 +101,7 @@ public class HotelReservationSystem {
 	public void loadReservations() {
 		sop("Loading Reservations: ");
 		try {
-			FileReader fr = new FileReader(new File("data/reservations.txt"));
+			FileReader fr = new FileReader(new File("reservations.txt"));
 			BufferedReader br = new BufferedReader(fr);
 			
 			String line;
@@ -124,7 +128,7 @@ public class HotelReservationSystem {
 	public void loadUsers() {
 		sop("Loading Users: ");
 		try {
-			FileReader fr = new FileReader(new File("data/users.txt"));
+			FileReader fr = new FileReader(new File("users.txt"));
 			BufferedReader br = new BufferedReader(fr);
 			
 			String line;
