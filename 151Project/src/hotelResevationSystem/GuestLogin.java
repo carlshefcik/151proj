@@ -36,7 +36,7 @@ public class GuestLogin extends ViewContent {
 		
 		loginButton.addActionListener(e ->{
 			if(hrs.userLogin(false, uID.getText(), String.valueOf(pw.getPassword()))) {
-				un.setText("");
+				uID.setText("");
 				pw.setText("");
 				changeView("Guest Menu");
 			}
