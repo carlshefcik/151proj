@@ -86,8 +86,6 @@ public class ReservationDayView extends ViewContent {
 				calBody.add(dayPanel);
 			}
 		}
-		else 
-			day=0;
 		
 		for(int i=1;i<=date.lengthOfMonth();i++) {
 			JPanel dayPanel=new JPanel();
