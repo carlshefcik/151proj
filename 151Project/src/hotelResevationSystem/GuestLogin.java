@@ -17,7 +17,7 @@ public class GuestLogin extends ViewContent {
 		textPane.setLayout(new BoxLayout(textPane,BoxLayout.Y_AXIS));
 		JLabel unLabel=new JLabel("UserID:");
 		JTextField uID=new JTextField("",10);
-		un.setSize(this.getWidth()/5,this.getHeight()/4);
+		uID.setSize(this.getWidth()/5,this.getHeight()/4);
 		JLabel pwLabel=new JLabel("Password:");
 		JPasswordField pw=new JPasswordField("",10);
 		textPane.add(unLabel);
