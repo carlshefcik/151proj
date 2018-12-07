@@ -15,13 +15,13 @@ public class GuestLogin extends ViewContent {
 		
 		JPanel textPane=new JPanel();
 		textPane.setLayout(new BoxLayout(textPane,BoxLayout.Y_AXIS));
-		JLabel unLabel=new JLabel("Username:");
-		JTextField un=new JTextField("",10);
+		JLabel unLabel=new JLabel("UserID:");
+		JTextField uID=new JTextField("",10);
 		un.setSize(this.getWidth()/5,this.getHeight()/4);
 		JLabel pwLabel=new JLabel("Password:");
 		JPasswordField pw=new JPasswordField("",10);
 		textPane.add(unLabel);
-		textPane.add(un);
+		textPane.add(uID);
 		textPane.add(pwLabel);
 		textPane.add(pw);
 	
@@ -35,13 +35,13 @@ public class GuestLogin extends ViewContent {
 		add(buttonPane);
 		
 		loginButton.addActionListener(e ->{
-			if(hrs.userLogin(false, un.getText(), String.valueOf(pw.getPassword()))) {
+			if(hrs.userLogin(false, uID.getText(), String.valueOf(pw.getPassword()))) {
 				un.setText("");
 				pw.setText("");
 				changeView("Guest Menu");
 			}
 			else {
-				JOptionPane.showMessageDialog(null, "Wrong Username or password!", "Error", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Wrong UserID or password!", "Error", JOptionPane.WARNING_MESSAGE);
 			}
 		});
 		
