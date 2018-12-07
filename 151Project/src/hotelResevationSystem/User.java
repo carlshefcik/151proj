@@ -14,7 +14,7 @@ public class User {
 	private String username;
 	private ArrayList<String> reservationIDs;
 	
-	public User(String userID, String password, String username) {
+	public User(String userID, String username, String password) {
 		this.userID = userID;
 		this.password = password;
 		this.username = username;
