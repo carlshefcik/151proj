@@ -17,43 +17,40 @@ public class ReservationDayView extends ViewContent {
 		
 		
 		setBorder(BorderFactory.createLineBorder(SystemColor.activeCaption));
-        //setLayout(new BorderLayout());
-        setBackground(Color.WHITE);
-        setForeground(Color.BLACK);
+        	setBackground(Color.WHITE);
+        	setForeground(Color.BLACK);
          
-        add(calHeader());
-        add(calBody());
-        //add(createDaysGUI(), BorderLayout.SOUTH);
+       		add(calHeader());
+        	add(calBody());
 	}
 	
 	public JPanel calHeader() {
-        //calHeader.setBorder(BorderFactory.createLineBorder(SystemColor.activeCaption));
 		JPanel calHeader =new JPanel(true);
-        calHeader.setLayout(new FlowLayout());
-        calHeader.setBackground(Color.WHITE);
+        	calHeader.setLayout(new FlowLayout());
+        	calHeader.setBackground(Color.WHITE);
         
 		DateTimeFormatter formatter=DateTimeFormatter.ofPattern("MMMM YYY");
-        JLabel month = new JLabel(formatter.format(date));
-        month.setForeground(SystemColor.activeCaption);
+        	JLabel month = new JLabel(formatter.format(date));
+        	month.setForeground(SystemColor.activeCaption);
         
-        JButton backButton = new JButton("<");
-        JButton nextButton = new JButton(">");
+        	JButton backButton = new JButton("<");
+        	JButton nextButton = new JButton(">");
         
-        backButton.addActionListener(e -> {
-        	date=date.minusMonths(1);
-        	month.setText(formatter.format(date));
-        });
+        	backButton.addActionListener(e -> {
+        		date=date.minusMonths(1);
+        		month.setText(formatter.format(date));
+        	});
         
-        nextButton.addActionListener(e -> {
-        	date=date.plusMonths(1);
-        	month.setText(formatter.format(date));
-        });
+        	nextButton.addActionListener(e -> {
+        		date=date.plusMonths(1);
+        		month.setText(formatter.format(date));
+        	});
         
-        calHeader.setPreferredSize(new Dimension(10,60));;
-        calHeader.add(backButton, BorderLayout.WEST);
-        calHeader.add(month, BorderLayout.CENTER);
-        calHeader.add(nextButton, BorderLayout.EAST);
-        return calHeader;
+        	calHeader.setPreferredSize(new Dimension(10,60));;
+        	calHeader.add(backButton, BorderLayout.WEST);
+        	calHeader.add(month, BorderLayout.CENTER);
+        	calHeader.add(nextButton, BorderLayout.EAST);
+        	return calHeader;
 	}
 	
 	public JPanel calBody() {
