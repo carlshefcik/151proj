@@ -1,6 +1,8 @@
 package hotelResevationSystem;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -9,21 +11,19 @@ import javax.swing.*;
 
 public class ReservationDayView extends ViewContent {
 	private LocalDate date;
+	private JPanel body;
 	
 	public ReservationDayView(HotelReservationSystem hrs) {
 		super(hrs);
 		setLayout(new GridLayout(2,1));
 		date=LocalDate.now();
-		
+		body=calBody();
 		
 		setBorder(BorderFactory.createLineBorder(SystemColor.activeCaption));
-        //setLayout(new BorderLayout());
         setBackground(Color.WHITE);
         setForeground(Color.BLACK);
-         
         add(calHeader());
-        add(calBody());
-        //add(createDaysGUI(), BorderLayout.SOUTH);
+        add(body); //change listener?
 	}
 	
 	public JPanel calHeader() {
@@ -41,12 +41,22 @@ public class ReservationDayView extends ViewContent {
         
         backButton.addActionListener(e -> {
         	date=date.minusMonths(1);
+        	this.remove(body);
         	month.setText(formatter.format(date));
+        	body=calBody();
+        	this.add(body);
+        	this.revalidate();
+        	this.repaint();
         });
         
         nextButton.addActionListener(e -> {
         	date=date.plusMonths(1);
+        	this.remove(body);
         	month.setText(formatter.format(date));
+        	body=calBody();
+        	this.add(body);
+        	this.revalidate();
+        	this.repaint();
         });
         
         calHeader.setPreferredSize(new Dimension(10,60));;
@@ -86,16 +96,28 @@ public class ReservationDayView extends ViewContent {
 				calBody.add(dayPanel);
 			}
 		}
+		else 
+			day=0;
 		
 		for(int i=1;i<=date.lengthOfMonth();i++) {
 			JPanel dayPanel=new JPanel();
 			dayPanel.setPreferredSize(new Dimension(81,30));
 			JLabel dayLabel=new JLabel(Integer.toString(i));
 			dayPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+			dayPanel.addMouseListener(new MouseAdapter() {
+				public void MousePressed(MouseEvent e) {	//Click on panel display reservations for day
+					
+				}
+				
+			});
 			dayPanel.add(dayLabel);
 			calBody.add(dayPanel);
 		}
 		
 		return calBody;
+	}
+	
+	public void refresh() {
+		this.repaint();
 	}
 }
