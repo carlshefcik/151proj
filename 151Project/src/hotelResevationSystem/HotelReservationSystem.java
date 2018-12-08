@@ -70,7 +70,26 @@ public class HotelReservationSystem {
 	}
 	
 	/**
-	 * Logs the user in if the user and Id match
+	 *Attaches ChangeListeners to model
+	*/
+	public void attachChangeListener(ChangeListener c)
+	   {
+	      listeners.add(c);
+	   }
+	
+	/**
+	 *Updates listeners of change in Model
+	 */
+	public void updateUser(User user)
+	   {
+	      currentUser = user;
+	      for (ChangeListener l : listeners)
+	      {
+		 l.stateChanged(new ChangeEvent(this));
+	      }
+	   }
+	
+	/* Logs the user in if the user and Id match
 	 * @param manager user status (manager or guest)
 	 * @param userID the id of the user
 	 * @param password the attempted user password
