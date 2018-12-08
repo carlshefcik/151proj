@@ -22,7 +22,8 @@ public abstract class ViewContent extends JPanel implements ChangeListener{
 	
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		// TODO Auto-generated method stub
-		//update the info from the model
+		revalidate();
+		repaint();
+		hrs.sop("Revalidated");
 	}
 }
