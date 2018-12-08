@@ -23,21 +23,20 @@ public class ReservationDayView extends ViewContent {
         setBackground(Color.WHITE);
         setForeground(Color.BLACK);
         add(calHeader());
-        add(body); //change listener?
+        add(body); 
 	}
 	
 	public JPanel calHeader() {
-        //calHeader.setBorder(BorderFactory.createLineBorder(SystemColor.activeCaption));
 		JPanel calHeader =new JPanel(true);
-        calHeader.setLayout(new FlowLayout());
-        calHeader.setBackground(Color.WHITE);
+        	calHeader.setLayout(new FlowLayout());
+        	calHeader.setBackground(Color.WHITE);
         
 		DateTimeFormatter formatter=DateTimeFormatter.ofPattern("MMMM YYY");
-        JLabel month = new JLabel(formatter.format(date));
-        month.setForeground(SystemColor.activeCaption);
+        	JLabel month = new JLabel(formatter.format(date));
+        	month.setForeground(SystemColor.activeCaption);
         
-        JButton backButton = new JButton("<");
-        JButton nextButton = new JButton(">");
+        	JButton backButton = new JButton("<");
+        	JButton nextButton = new JButton(">");
         
         backButton.addActionListener(e -> {
         	date=date.minusMonths(1);
@@ -59,11 +58,11 @@ public class ReservationDayView extends ViewContent {
         	this.repaint();
         });
         
-        calHeader.setPreferredSize(new Dimension(10,60));;
-        calHeader.add(backButton, BorderLayout.WEST);
-        calHeader.add(month, BorderLayout.CENTER);
-        calHeader.add(nextButton, BorderLayout.EAST);
-        return calHeader;
+        	calHeader.setPreferredSize(new Dimension(10,60));;
+        	calHeader.add(backButton, BorderLayout.WEST);
+        	calHeader.add(month, BorderLayout.CENTER);
+        	calHeader.add(nextButton, BorderLayout.EAST);
+        	return calHeader;
 	}
 	
 	public JPanel calBody() {
