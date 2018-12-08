@@ -26,6 +26,7 @@ public class HotelReservationViewer extends JFrame {
 		MakeReservation makeReservation = new MakeReservation(hrs);
 		ViewReservations viewReservations = new ViewReservations(hrs);
 		ManagerLogin managerLogin = new ManagerLogin(hrs);
+		ReservationDayView dayView = new ReservationDayView(hrs);
 
 		Container contentPane = this.getContentPane();
 		cardLayout = new CardLayout();
@@ -36,6 +37,7 @@ public class HotelReservationViewer extends JFrame {
 		
 		contentPane.add(managerLogin, "Manager Login");
 		contentPane.add(managerMenu, "Manager Menu");
+		contentPane.add(dayView, "Day View");
 
 		contentPane.add(guestLogin, "Guest Login");
 		contentPane.add(guestMenu, "Guest Menu");
