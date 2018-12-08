@@ -14,6 +14,8 @@ public class ManagerMenu extends ViewContent {
 		add(tf);
 		
 		JButton logoutButton = new JButton("Log out");
+		JButton dayViewButton = new JButton("Day View");
+		add(dayViewButton);
 		add(logoutButton);
 		
 		
@@ -21,7 +23,12 @@ public class ManagerMenu extends ViewContent {
 			changeView("Main Menu");
 		});
 		
+		dayViewButton.addActionListener(e ->{
+			changeView("Day View");
+		});
+		
 		// TODO Auto-generated constructor stub
 	}
 
 }
+
