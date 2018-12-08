@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-import javax.swing.event.ChangeListener;
+import javax.swing.event.*;
 
 /**
  * HotelReservationSystem is the Model for the MVC
@@ -100,11 +100,11 @@ public class HotelReservationSystem {
 		try {
 			if(!manager&&users.get(userID).correctPassword(password)) {
 				//sets the current user and returns true
-				currentUser = users.get(userID);
+				updateUser(users.get(userID));
 				return true;
 			}
 			else if(manager&&managers.get(userID).correctPassword(password)) {
-				currentUser = managers.get(userID);
+				updateUser(users.get(managers.get(userID)));
 				return true;
 			}
 			return false;
