@@ -5,70 +5,96 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
-import javax.swing.BorderFactory;
 import javax.swing.*;
 
+/**
+ * View that displays the day by day view of reservations in the system
+ * @author Christian Castro
+ *
+ */
 public class ReservationDayView extends ViewContent {
 	private LocalDate date;
-	private JPanel body;
+	private JPanel calendar;
+	private JPanel text;
+	private JTextArea resDisplay;
+	private LocalDate resDate;
 	
 	public ReservationDayView(HotelReservationSystem hrs) {
 		super(hrs);
-		setLayout(new GridLayout(2,1));
+		setLayout(new GridLayout(1,1));
 		date=LocalDate.now();
-		body=calBody();
+		calendar=calendar();
+		resDisplay=new JTextArea();
+		text=new JPanel();
+		text.add(resDisplay);
+		
 		
 		setBorder(BorderFactory.createLineBorder(SystemColor.activeCaption));
         setBackground(Color.WHITE);
         setForeground(Color.BLACK);
-        add(calHeader());
-        add(body); 
+        add(calendar);
+        add(text);
 	}
 	
+	/**
+	 * Constructs container that displays Month and year of calendar along with Buttons to move to different month
+	 * @return	JPanel
+	 */
 	public JPanel calHeader() {
 		JPanel calHeader =new JPanel(true);
-        	calHeader.setLayout(new FlowLayout());
-        	calHeader.setBackground(Color.WHITE);
+        calHeader.setLayout(new FlowLayout());
+        calHeader.setBackground(Color.WHITE);
+        calHeader.setPreferredSize(new Dimension(this.getWidth(),20));
         
 		DateTimeFormatter formatter=DateTimeFormatter.ofPattern("MMMM YYY");
-        	JLabel month = new JLabel(formatter.format(date));
-        	month.setForeground(SystemColor.activeCaption);
+        JLabel month = new JLabel(formatter.format(date));
+        month.setForeground(SystemColor.activeCaption);
         
-        	JButton backButton = new JButton("<");
-        	JButton nextButton = new JButton(">");
+        JButton backButton = new JButton("<<");
+        JButton nextButton = new JButton(">>");
         
         backButton.addActionListener(e -> {
         	date=date.minusMonths(1);
-        	this.remove(body);
+        	this.remove(calendar);
+        	this.remove(text);
         	month.setText(formatter.format(date));
-        	body=calBody();
-        	this.add(body);
+        	calendar=calendar();
+        	this.add(calendar);
+        	this.add(text);
         	this.revalidate();
         	this.repaint();
         });
         
         nextButton.addActionListener(e -> {
         	date=date.plusMonths(1);
-        	this.remove(body);
+        	remove(calendar);
+        	remove(text);
         	month.setText(formatter.format(date));
-        	body=calBody();
-        	this.add(body);
-        	this.revalidate();
-        	this.repaint();
+        	calendar=calendar();
+        	add(calendar);
+        	add(text);
+        	revalidate();
+        	repaint();
         });
         
-        	calHeader.setPreferredSize(new Dimension(10,60));;
-        	calHeader.add(backButton, BorderLayout.WEST);
-        	calHeader.add(month, BorderLayout.CENTER);
-        	calHeader.add(nextButton, BorderLayout.EAST);
-        	return calHeader;
+        calHeader.setPreferredSize(new Dimension(10,60));;
+        calHeader.add(backButton, BorderLayout.WEST);
+        calHeader.add(month, BorderLayout.CENTER);
+        calHeader.add(nextButton, BorderLayout.EAST);
+        return calHeader;
 	}
 	
-	public JPanel calBody() {
+	/**
+	 * Method that constructs GUI of gregorian calendar 
+	 * @return JPanel of calendar
+	 */
+	public JPanel calendar() {
 		String[] days= {"Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"};
-		JPanel calBody=new JPanel(true);
+		JPanel calendar=new JPanel(true);
+		calendar.setLayout(new BoxLayout(calendar,BoxLayout.Y_AXIS));
+		calendar.add(calHeader());
 		
+		JPanel calBody=new JPanel(true);
 		calBody.setPreferredSize(new Dimension((int)this.getBounds().getWidth(), this.getHeight()));
 		FlowLayout layout=new FlowLayout(FlowLayout.LEFT);
 		layout.setHgap(0);
@@ -95,28 +121,41 @@ public class ReservationDayView extends ViewContent {
 				calBody.add(dayPanel);
 			}
 		}
-		else 
-			day=0;
 		
 		for(int i=1;i<=date.lengthOfMonth();i++) {
 			JPanel dayPanel=new JPanel();
 			dayPanel.setPreferredSize(new Dimension(81,30));
-			JLabel dayLabel=new JLabel(Integer.toString(i));
 			dayPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+			JLabel dayLabel=new JLabel(Integer.toString(i));
+			
 			dayPanel.addMouseListener(new MouseAdapter() {
-				public void MousePressed(MouseEvent e) {	//Click on panel display reservations for day
-					
+				public void mousePressed(MouseEvent e) {	//Click on panel display reservations for day
+					resDate=LocalDate.of(date.getYear(), date.getMonth(), Integer.parseInt(dayLabel.getText()));
+					String res="";
+					try{
+						for(Reservation r:hrs.getReservations(resDate)) {
+							res=res+r.resDetails()+"\n";
+						}
+						if(res.equals(""))
+							res="No reservations made for this day.";
+					}
+					catch(Exception ex){
+						res="No reservations made for this day.";
+					}
+					remove(calendar);
+					remove(text);
+					resDisplay.setText(res);
+					add(calendar);
+					add(text);
+		        	revalidate();
+		        	repaint();
 				}
-				
 			});
+			
 			dayPanel.add(dayLabel);
 			calBody.add(dayPanel);
 		}
-		
-		return calBody;
-	}
-	
-	public void refresh() {
-		this.repaint();
+		calendar.add(calBody);
+		return calendar;
 	}
 }
