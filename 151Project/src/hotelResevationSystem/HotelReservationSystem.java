@@ -3,14 +3,17 @@ package hotelResevationSystem;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.swing.event.ChangeListener;
 
 /**
  * HotelReservationSystem is the Model for the MVC
- * @author Carl Sheficik
+ * @author Carl Sheficik, Christian Castro
  *
  */
 public class HotelReservationSystem {
@@ -44,6 +47,21 @@ public class HotelReservationSystem {
 	}
 	
 	/**
+	 * Gets reservations relative to given date
+	 * @param d date
+	 * @return array list of reservations
+	 */
+	public ArrayList<Reservation> getReservations(LocalDate d) {
+		ArrayList<Reservation> res=new ArrayList<Reservation>();
+		for(String key:reservations.keySet()) {
+			if((d.isAfter(reservations.get(key).getStartDate())&&d.isBefore(reservations.get(key).getEndDate()))
+					||d.isEqual(reservations.get(key).getStartDate())||d.isEqual(reservations.get(key).getEndDate()))
+				res.add(reservations.get(key));
+		}
+		return res;
+	}
+	
+	/**
 	 * Attaches the view to the Model to cycle through the ViewContent's correctly
 	 * @param hrv the viewer to be attached
 	 */
@@ -53,7 +71,7 @@ public class HotelReservationSystem {
 	
 	/**
 	 * Logs the user in if the user and Id match
-	 * @param manager User status (manager or guest)
+	 * @param manager user status (manager or guest)
 	 * @param userID the id of the user
 	 * @param password the attempted user password
 	 * @return true if logged in, false if wrong password
