@@ -18,6 +18,7 @@ public class Reservation {
 	private LocalDate endDate;
 	private String userID;
 	private String roomNumber;
+	private TimeInterval timeInterval;
 	
 	public Reservation(String reservationID, String startDate, String endDate, String userID, String roomNumber) {
 		this.reservationID = reservationID;
@@ -38,6 +39,15 @@ public class Reservation {
 	public String getRoom() { return roomNumber; }
 	public LocalDate getStartDate() {return startDate;}
 	public LocalDate getEndDate() {return endDate;}
+	
+	/**
+	 * Checks to see if the dates overlap
+	 * @param dates a time interval to check if the dates overlap
+	 * @return true iv overlap, false otherwise
+	 */
+	public boolean dateOverlap(TimeInterval dates) {
+		return timeInterval.overlap(dates);
+	}
 	
 	/**
 	 * Constructs string containing details of reservation

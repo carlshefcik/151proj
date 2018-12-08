@@ -4,12 +4,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
-import javax.swing.event.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  * HotelReservationSystem is the Model for the MVC
@@ -70,26 +69,28 @@ public class HotelReservationSystem {
 	}
 	
 	/**
-	 *Attaches ChangeListeners to model
-	*/
-	public void attachChangeListener(ChangeListener c)
-	   {
-	      listeners.add(c);
-	   }
-	
-	/**
-	 *Updates listeners of change in Model
+	 * Attaches ChangeListeners to model
 	 */
-	public void updateUser(User user)
-	   {
-	      currentUser = user;
-	      for (ChangeListener l : listeners)
-	      {
-		 l.stateChanged(new ChangeEvent(this));
-	      }
-	   }
+	public void attachChangeListener(ChangeListener c) {
+		listeners.add(c);
+	}
+
+	/**
+	 * Updates listeners of change in Model
+	 */
+	public void updateUser(User user) {
+		currentUser = user;
+		for (ChangeListener l : listeners) {
+			l.stateChanged(new ChangeEvent(this));
+		}
+	}
 	
-	/* Logs the user in if the user and Id match
+	//getter mothods
+	public User getCurrentUser() {
+		return currentUser;
+	}
+
+	/** Logs the user in if the user and Id match
 	 * @param manager user status (manager or guest)
 	 * @param userID the id of the user
 	 * @param password the attempted user password
