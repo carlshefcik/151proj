@@ -216,4 +216,9 @@ public class HotelReservationSystem {
 	public void sop(Object o) {
 		System.out.println(o);
 	}
+	
+	public User getCurrentUser()
+	{
+		return currentUser;
+	}
 }
