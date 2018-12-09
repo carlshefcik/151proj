@@ -22,8 +22,5 @@ public abstract class ViewContent extends JPanel implements ChangeListener{
 	
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		revalidate();
-		repaint();
-		hrs.sop("Revalidated");
 	}
 }
