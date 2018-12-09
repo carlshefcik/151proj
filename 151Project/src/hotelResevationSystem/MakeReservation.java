@@ -222,7 +222,7 @@ public class MakeReservation extends ViewContent{
 			//puts all the rooms in a list
 			ArrayList<String> rooms = new ArrayList<>();
 			if(luxory) 
-				rooms.addAll(Arrays.asList(hrs.lUXORY_ROOMS));
+				rooms.addAll(Arrays.asList(hrs.LUXORY_ROOMS));
 			else 
 				rooms.addAll(Arrays.asList(hrs.ECONOMIC_ROOMS));
 			
