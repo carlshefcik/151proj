@@ -24,6 +24,8 @@ public class HotelReservationSystem {
 
 	private User currentUser;
 	
+	private int lastResID;
+	
 	//reference to the view
 	HotelReservationViewer hrv;
 	
@@ -231,6 +233,18 @@ public class HotelReservationSystem {
 	}
 	
 	/**
+	 * Adds a reservation to the map from the current user and updates the view
+	 * @param r the reservation to be added
+	 */
+	public void makeReservation(TimeInterval dates, String room) {
+		lastResID++;
+		Reservation r = new Reservation(Integer.toString(lastResID), dates, currentUser.getUsername(), room );
+		reservations.put(r.getReservationID(), r);
+		currentUser.addReservation(r.getReservationID());
+		updateViews();
+	}
+	
+	/**
 	 * Loads all the reservations from the reservations.txt and puts them in the reservations HashMap
 	 */
 	public void loadReservations() {
@@ -246,6 +260,7 @@ public class HotelReservationSystem {
 				//put into instance variable and store in map
 				Reservation tempRes = new Reservation(resInfo[0],resInfo[1],resInfo[2],resInfo[3],resInfo[4]);
 				reservations.put(resInfo[0], tempRes);
+				lastResID = Integer.parseInt(resInfo[0]);
 			}
 			br.close();
 			fr.close();

@@ -1,7 +1,6 @@
 package hotelResevationSystem;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 /**
  * TimeInterval class uses the java.time packages to create time interval objects that can be compared to each other

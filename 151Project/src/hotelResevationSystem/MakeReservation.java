@@ -20,7 +20,6 @@ import javax.swing.JTextField;
 
 public class MakeReservation extends ViewContent{
 	private HotelReservationSystem hrs;
-	private int data;
 	private RoomAvaliabilityView roomView;
 	private TimeInterval ti;
 	private HashMap<String, Reservation> reservations;
@@ -126,6 +125,7 @@ public class MakeReservation extends ViewContent{
 					if(!tempTi.over60()) {
 						ti = tempTi;
 						hrs.sop("Looking for avaliable rooms: " + tempTi.toString());
+						roomView.ti = tempTi;
 						roomView.roomSearch(tempTi, luxory);
 					} else {
 						status.setText("Cannot have reservations lasting more than 60 days.");
@@ -163,10 +163,6 @@ public class MakeReservation extends ViewContent{
         reservations = hrs.getReservations();
 	}
 	
-	public void reset() {
-		
-	}
-	
 	/**
 	 * Inner class that is rendered in the MakeReservationViewer view
 	 * @author Carl Shefcik
@@ -174,12 +170,17 @@ public class MakeReservation extends ViewContent{
 	 */
 	public class RoomAvaliabilityView extends ViewContent {
 		private JTextField tf;
+		private ArrayList<String> rooms;
+		public TimeInterval ti;
 
 		public RoomAvaliabilityView(HotelReservationSystem hrs) {
 			super(hrs);
 			
-			GroupLayout layout1 = new GroupLayout(this);
-			setLayout(layout1);
+			setLayout(new BorderLayout());
+			
+			JPanel pane = new JPanel();
+			GroupLayout layout1 = new GroupLayout(pane);
+			pane.setLayout(layout1);
 			
 			layout1.setAutoCreateGaps(true);
 			layout1.setAutoCreateContainerGaps(true);
@@ -187,44 +188,63 @@ public class MakeReservation extends ViewContent{
 			tf = new JTextField("Avaliable Rooms: ", 10);
 			tf.setEditable(false);
 			tf.setSize(this.getWidth()/4, this.getHeight()/4);
+			
+			
+			JLabel roomLabel = new JLabel("Enter room:");
+			JTextField roomNumber = new JTextField("", 10);
 
 			
-			JButton c1 = new JButton("Button 1");
-			JButton c2 = new JButton("Button 2");
-			JButton c3 = new JButton("Button 3");
-			JButton c4 = new JButton("Button 4");
+			JTextField status = new JTextField("No reservation made yet.");
+			status.setEditable(false);
+	        this.add(status, BorderLayout.SOUTH);
+			
+			JButton confirmButton = new JButton("Confirm");
+			confirmButton.addActionListener(e ->{
+				if(rooms != null && !rooms.isEmpty()) {
+					if(rooms.contains(roomNumber.getText())) {
+						
+						hrs.makeReservation(ti, roomNumber.getText());
+						status.setText("Reservation complete!");
+					}
+				} else {
+					status.setText("Invalid reservation!");
+				}
+			});
+			
+			JButton doneButton = new JButton("Done");
+			doneButton.addActionListener(e ->{
+				changeView("Guest Menu");
+			});
+
 			
 			layout1.setHorizontalGroup(
 			   layout1.createSequentialGroup()
 			      .addComponent(tf)
-			      .addComponent(c1)
-			      .addComponent(c2)
-			      .addGroup(layout1.createParallelGroup(GroupLayout.Alignment.LEADING)
-			           .addComponent(c3)
-			           .addComponent(c4))
+			      .addComponent(roomLabel)
+			      .addComponent(roomNumber)
+			      .addComponent(confirmButton)
+			      .addComponent(doneButton)
 			);
 			layout1.setVerticalGroup(
 			   layout1.createSequentialGroup()
 			      .addComponent(tf)
-
 			      .addGroup(layout1.createParallelGroup(GroupLayout.Alignment.BASELINE)
-
-			           .addComponent(c1)
-			           .addComponent(c2)
-			           .addComponent(c3))
-			      .addComponent(c4)
+		    		  .addGroup(layout1.createParallelGroup(GroupLayout.Alignment.BASELINE)
+		    				  .addComponent(roomLabel)
+				    		  .addComponent(roomNumber))
+		    		  .addComponent(confirmButton)
+				      .addComponent(doneButton))
 			);
 					
 			
-//			this.add(pane, BorderLayout.CENTER);
-//			this.tf = new JTextField();
-//	        this.add(tf, BorderLayout.SOUTH);
+			this.add(pane, BorderLayout.CENTER);
+			
 		}
 		
 		public void roomSearch(TimeInterval ti, boolean luxory) {
 			//search for avaliability
 			//puts all the rooms in a list
-			ArrayList<String> rooms = new ArrayList<>();
+			rooms = new ArrayList<>();
 			if(luxory) 
 				rooms.addAll(Arrays.asList(hrs.LUXORY_ROOMS));
 			else 
@@ -248,9 +268,10 @@ public class MakeReservation extends ViewContent{
 		
 		
 		
+		
 		public void paintComponent(Graphics g) {
 	        super.paintComponent(g);
-	        //should redo the avaliable rooms in a text field
+	        tf.setText("Avaliable Rooms:");
         }
 		
 	}

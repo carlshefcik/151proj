@@ -1,10 +1,7 @@
 package hotelResevationSystem;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 /**
  * Reservation object holds data on a specific reservation made and 
@@ -32,6 +29,15 @@ public class Reservation {
 		this.userID = userID;
 		this.roomNumber = roomNumber;
 		this.timeInterval = new TimeInterval(this.startDate, this.endDate);
+	}
+	
+	public Reservation(String reservationID, TimeInterval ti, String userID, String roomNumber) {
+		this.reservationID = reservationID;
+		this.startDate = ti.getStartTime();
+		this.endDate = ti.getEndTime();
+		this.userID = userID;
+		this.roomNumber = roomNumber;
+		this.timeInterval = ti;
 	}
 	
 	//getter methods
