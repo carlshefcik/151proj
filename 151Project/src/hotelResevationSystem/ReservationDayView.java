@@ -248,6 +248,8 @@ public class ReservationDayView extends ViewContent {
 		
 		JButton backButton = new JButton("back");
 		backButton.addActionListener(e ->{
+			details.setText("");
+			resDisplay.setText("");
 			hrs.changeView("Manager Menu");
 		});
 		rooms.add(backButton);
