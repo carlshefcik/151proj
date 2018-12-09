@@ -27,6 +27,9 @@ public class HotelReservationViewer extends JFrame {
 		ViewReservations viewReservations = new ViewReservations(hrs);
 		ManagerLogin managerLogin = new ManagerLogin(hrs);
 		ReservationDayView dayView = new ReservationDayView(hrs);
+		
+		hrs.attachChangeListener(viewReservations);
+
 
 		Container contentPane = this.getContentPane();
 		cardLayout = new CardLayout();
