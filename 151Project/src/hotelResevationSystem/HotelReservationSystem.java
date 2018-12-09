@@ -80,15 +80,21 @@ public class HotelReservationSystem {
 	 */
 	public void updateUser(User user) {
 		currentUser = user;
+		updateViews();
+	}
+	
+	/**
+	 * Updates all the views with new content
+	 */
+	public void updateViews() {
 		for (ChangeListener l : listeners) {
 			l.stateChanged(new ChangeEvent(this));
 		}
 	}
 	
-	//getter mothods
-	public User getCurrentUser() {
-		return currentUser;
-	}
+	//getter methods
+	public User getCurrentUser() { return currentUser; }
+	public HashMap<String, Reservation> getReservations(){ return reservations; }
 
 	/** Logs the user in if the user and Id match
 	 * @param manager user status (manager or guest)

@@ -118,9 +118,10 @@ public class MakeReservation extends ViewContent{
 					startInt[i] = Integer.parseInt(start[i]);
 					endInt[i] = Integer.parseInt(end[i]);
 				}
-				ti = new TimeInterval(LocalDate.of(startInt[2], startInt[0], startInt[1]), 
+				TimeInterval tempTi = new TimeInterval(LocalDate.of(startInt[2], startInt[0], startInt[1]), 
 								LocalDate.of(endInt[2], endInt[0], endInt[1]));
-					if(!ti.over60()) {
+					if(!tempTi.over60()) {
+						ti = tempTi;
 						hrs.sop("Looking for avaliable rooms");
 						roomView.stateChanged(new ChangeEvent(this));
 					} else {
