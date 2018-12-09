@@ -20,6 +20,8 @@ public class HotelReservationSystem {
 	public static final String[] LUXORY_ROOMS = {"1","2","3","4","5","6","7","8","9","10"};
 	public static final String[] ECONOMIC_ROOMS = {"11","12","13","14","15","16","17","18","19","20"};
 	
+	private int beginningKey = 10;
+
 	private User currentUser;
 	
 	//reference to the view
@@ -136,6 +138,26 @@ public class HotelReservationSystem {
 	 */
 	public void attachChangeListener(ChangeListener c) {
 		listeners.add(c);
+	}
+	
+	/**
+ 	 *newUser creates new user adds to hash
+	 */
+	public String newUser(String username, String password)
+	{
+		String key = Integer.toString(beginningKey);
+		while(users.containsKey(key))
+		{
+			if(users.containsKey(key))
+			{
+				beginningKey++;
+				key = Integer.toString(beginningKey);
+			}
+		}
+		User tempUser = new User(key, username, password);
+		users.put(key, tempUser);
+		updateUser(tempUser);
+		return Integer.toString(beginningKey);
 	}
 
 	/**
