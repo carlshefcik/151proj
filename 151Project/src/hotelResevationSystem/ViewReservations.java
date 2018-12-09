@@ -3,6 +3,8 @@ package hotelResevationSystem;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
+import java.awt.Graphics;
+
 
 public class ViewReservations extends ViewContent {
 
