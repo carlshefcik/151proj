@@ -245,6 +245,12 @@ public class ReservationDayView extends ViewContent {
 		rooms.add(header);
 		rooms.add(luxory);
 		rooms.add(economic);
+		
+		JButton backButton = new JButton("back");
+		backButton.addActionListener(e ->{
+			hrs.changeView("Manager Menu");
+		});
+		rooms.add(backButton);
 		return rooms;
 	}
 }
