@@ -62,7 +62,7 @@ public class HotelReservationViewer extends JFrame {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
-		setSize(600,400);
+		setSize(1200,600);
 		setVisible(true);
 		
 	}
