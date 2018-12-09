@@ -4,10 +4,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
@@ -17,7 +18,7 @@ import javax.swing.event.ChangeListener;
  */
 public class HotelReservationSystem {
 	// static instantiation for the total rooms available
-	private static final String[] lUXORY_ROOMS = {"1","2","3","4","5","6","7","8","9","10"};
+	private static final String[] LUXORY_ROOMS = {"1","2","3","4","5","6","7","8","9","10"};
 	private static final String[] ECONOMIC_ROOMS = {"11","12","13","14","15","16","17","18","19","20"};
 	
 	private User currentUser;
@@ -45,6 +46,30 @@ public class HotelReservationSystem {
 		loadUsers();
 	}
 	
+	//Getter methods
+	public String[] getLuxoryRooms() {
+		return LUXORY_ROOMS.clone();
+	}
+	public String[] getEconomicRooms() {
+		return ECONOMIC_ROOMS.clone();
+	}
+	
+	/**
+	 * Get reservations by room number
+	 * @param room room number
+	 * @return	String with all reservations ties to room
+	 */
+	public String getResByRoom(String room) {
+		String res="";
+		for(String key:reservations.keySet()) {
+			if(room.equals(reservations.get(key).getRoom()))
+				res=res+reservations.get(key).roomDetails();
+		}
+		if(res.equals(""))
+			res="No reservations were made for this room";
+		
+		return res;
+	}
 	/**
 	 * Gets reservations relative to given date
 	 * @param d date
@@ -53,11 +78,48 @@ public class HotelReservationSystem {
 	public ArrayList<Reservation> getReservations(LocalDate d) {
 		ArrayList<Reservation> res=new ArrayList<Reservation>();
 		for(String key:reservations.keySet()) {
-			if((d.isAfter(reservations.get(key).getStartDate())&&d.isBefore(reservations.get(key).getEndDate()))
-					||d.isEqual(reservations.get(key).getStartDate())||d.isEqual(reservations.get(key).getEndDate()))
+			if(dateReserved(d,reservations.get(key)))
 				res.add(reservations.get(key));
 		}
 		return res;
+	}
+	
+	/**
+	 * Check if room is reserved for given date
+	 * @param d date
+	 * @param r reservation
+	 * @return boolean
+	 */
+	public boolean dateReserved(LocalDate d, Reservation r) {
+		if((d.isAfter(r.getStartDate())&&d.isBefore(r.getEndDate()))
+				||d.isEqual(r.getStartDate())||d.isEqual(r.getEndDate()))
+			return true;
+		return false;
+	}
+	
+	/**
+	 * Gets rooms that have no reservations for the given date
+	 * @param d	date
+	 * @return	list of rooms available
+	 */
+	public String getAvailableRooms(LocalDate d) {
+		ArrayList<String> roomsTaken=new ArrayList<String>();
+		for(String key:reservations.keySet()) {
+			if(!roomsTaken.contains(reservations.get(key).getRoom())&&dateReserved(d,reservations.get(key))) {
+				roomsTaken.add(reservations.get(key).getRoom());
+			}
+		}
+		String rooms="Luxory Rooms: ";
+		for(int i=0;i<LUXORY_ROOMS.length;i++) {
+			if(!roomsTaken.contains(LUXORY_ROOMS[i]))
+				rooms=rooms+LUXORY_ROOMS[i]+" ";
+		}
+		rooms=rooms+"\nEconomic Rooms: ";
+		for(int i=0;i<ECONOMIC_ROOMS.length;i++) {
+			if(!roomsTaken.contains(ECONOMIC_ROOMS[i]))
+				rooms=rooms+ECONOMIC_ROOMS[i]+" ";
+		}
+		return rooms;
 	}
 	
 	/**
@@ -69,28 +131,7 @@ public class HotelReservationSystem {
 	}
 	
 	/**
-	 * Attaches ChangeListeners to model
-	 */
-	public void attachChangeListener(ChangeListener c) {
-		listeners.add(c);
-	}
-
-	/**
-	 * Updates listeners of change in Model
-	 */
-	public void updateUser(User user) {
-		currentUser = user;
-		for (ChangeListener l : listeners) {
-			l.stateChanged(new ChangeEvent(this));
-		}
-	}
-	
-	//getter mothods
-	public User getCurrentUser() {
-		return currentUser;
-	}
-
-	/** Logs the user in if the user and Id match
+	 * Logs the user in if the user and Id match
 	 * @param manager user status (manager or guest)
 	 * @param userID the id of the user
 	 * @param password the attempted user password
@@ -101,11 +142,11 @@ public class HotelReservationSystem {
 		try {
 			if(!manager&&users.get(userID).correctPassword(password)) {
 				//sets the current user and returns true
-				updateUser(users.get(userID));
+				currentUser = users.get(userID);
 				return true;
 			}
 			else if(manager&&managers.get(userID).correctPassword(password)) {
-				updateUser(users.get(managers.get(userID)));
+				currentUser = managers.get(userID);
 				return true;
 			}
 			return false;
