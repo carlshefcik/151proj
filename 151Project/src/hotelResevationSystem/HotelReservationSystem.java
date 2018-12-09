@@ -245,6 +245,18 @@ public class HotelReservationSystem {
 	}
 	
 	/**
+	 * 
+	 */
+	public String loadReservations(ArrayList<String> reservationIDs) {
+		String temp = "";
+		for(String id: reservationIDs) {
+			if(reservations.containsKey(id))
+				temp += reservations.get(id).resDetails() + "\n";
+		}
+		return temp;
+	}
+	
+	/**
 	 * Loads all the reservations from the reservations.txt and puts them in the reservations HashMap
 	 */
 	public void loadReservations() {
