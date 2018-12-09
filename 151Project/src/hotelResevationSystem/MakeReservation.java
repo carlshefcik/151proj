@@ -2,31 +2,34 @@ package hotelResevationSystem;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 public class MakeReservation extends ViewContent{
 	private HotelReservationSystem hrs;
 	private int data;
-	private ChangeListener roomView;
+	private RoomAvaliabilityView roomView;
 	private TimeInterval ti;
-	
-	
+	private HashMap<String, Reservation> reservations;
+	private boolean luxory;
+
 	public MakeReservation(HotelReservationSystem hrs) {
 		super(hrs);
 		this.hrs = hrs;
+		luxory = true;
 		
 		setLayout(new BorderLayout());
 		
@@ -122,8 +125,8 @@ public class MakeReservation extends ViewContent{
 								LocalDate.of(endInt[2], endInt[0], endInt[1]));
 					if(!tempTi.over60()) {
 						ti = tempTi;
-						hrs.sop("Looking for avaliable rooms");
-						roomView.stateChanged(new ChangeEvent(this));
+						hrs.sop("Looking for avaliable rooms: " + tempTi.toString());
+						roomView.roomSearch(tempTi, luxory);
 					} else {
 						status.setText("Cannot have reservations lasting more than 60 days.");
 					}
@@ -136,25 +139,42 @@ public class MakeReservation extends ViewContent{
 			changeView("Guest Menu");
 		});
 		
+		luxoryButton.addActionListener(e -> {
+			luxory = true;
+			JOptionPane.showMessageDialog(this, "thank you for using java");
+
+		});
+		
+		economyButton.addActionListener(e -> {
+			luxory = false;
+		});
+		
 		RoomAvaliabilityView rav = new RoomAvaliabilityView(hrs);
 		this.roomView = rav;
 		
 		add(rav, BorderLayout.CENTER);
 	}
 	
-	//I think this does nothing
+	/**
+	 * Updates the reservations map
+	 */
 	public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        reservations = hrs.getReservations();
 	}
 	
-	public void actionPerformed(ActionEvent e) {
-	    hrs.sop(e.getActionCommand());
+	public void reset() {
+		
 	}
 	
-	
+	/**
+	 * Inner class that is rendered in the MakeReservationViewer view
+	 * @author Carl Shefcik
+	 *
+	 */
 	public class RoomAvaliabilityView extends ViewContent {
 		private JTextField tf;
-		
+
 		public RoomAvaliabilityView(HotelReservationSystem hrs) {
 			super(hrs);
 			
@@ -164,6 +184,11 @@ public class MakeReservation extends ViewContent{
 			layout1.setAutoCreateGaps(true);
 			layout1.setAutoCreateContainerGaps(true);
 			
+			tf = new JTextField("Avaliable Rooms: ", 10);
+			tf.setEditable(false);
+			tf.setSize(this.getWidth()/4, this.getHeight()/4);
+
+			
 			JButton c1 = new JButton("Button 1");
 			JButton c2 = new JButton("Button 2");
 			JButton c3 = new JButton("Button 3");
@@ -171,6 +196,7 @@ public class MakeReservation extends ViewContent{
 			
 			layout1.setHorizontalGroup(
 			   layout1.createSequentialGroup()
+			      .addComponent(tf)
 			      .addComponent(c1)
 			      .addComponent(c2)
 			      .addGroup(layout1.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -179,7 +205,10 @@ public class MakeReservation extends ViewContent{
 			);
 			layout1.setVerticalGroup(
 			   layout1.createSequentialGroup()
+			      .addComponent(tf)
+
 			      .addGroup(layout1.createParallelGroup(GroupLayout.Alignment.BASELINE)
+
 			           .addComponent(c1)
 			           .addComponent(c2)
 			           .addComponent(c3))
@@ -192,11 +221,37 @@ public class MakeReservation extends ViewContent{
 //	        this.add(tf, BorderLayout.SOUTH);
 		}
 		
+		public void roomSearch(TimeInterval ti, boolean luxory) {
+			//search for avaliability
+			//puts all the rooms in a list
+			ArrayList<String> rooms = new ArrayList<>();
+			if(luxory) 
+				rooms.addAll(Arrays.asList(hrs.LUXORY_ROOMS));
+			else 
+				rooms.addAll(Arrays.asList(hrs.ECONOMIC_ROOMS));
+			
+			//removes the rooms that have a time conflict
+			for (Reservation r :reservations.values()) 
+				if(r.dateOverlap(ti)) 
+					rooms.remove(r.getRoom());
+			//update the view
+			if(rooms.isEmpty()) {
+				tf.setText("There are no rooms for your selected stay!");
+			} else {
+				String results = "Avaliable Rooms: \n";
+				for (String s : rooms) 
+					results += s + ", ";
+				tf.setText(results);
+			}
+			
+		}
+		
+		
+		
 		public void paintComponent(Graphics g) {
 	        super.paintComponent(g);
-	        
-//	        this.tf.setText(""+data);
-		}
+	        //should redo the avaliable rooms in a text field
+        }
 		
 	}
 }

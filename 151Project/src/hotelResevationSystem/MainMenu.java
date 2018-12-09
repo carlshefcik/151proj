@@ -21,7 +21,7 @@ public class MainMenu extends ViewContent {
 		
 		add(guestButton);
 		add(managerButton);
-		
+		add(newGuestButton);
 		
 		guestButton.addActionListener(e ->{
 			changeView("Guest Login");
