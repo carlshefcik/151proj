@@ -18,22 +18,24 @@ public class ReservationDayView extends ViewContent {
 	private JPanel text;
 	private JTextArea resDisplay;
 	private LocalDate resDate;
+	private JPanel rooms;
+	private JPanel roomText;
 	
 	public ReservationDayView(HotelReservationSystem hrs) {
 		super(hrs);
-		setLayout(new GridLayout(1,1));
+		setLayout(new GridLayout(2,2));
 		date=LocalDate.now();
 		calendar=calendar();
 		resDisplay=new JTextArea();
 		text=new JPanel();
 		text.add(resDisplay);
-		
-		
-		setBorder(BorderFactory.createLineBorder(SystemColor.activeCaption));
-        setBackground(Color.WHITE);
-        setForeground(Color.BLACK);
+		rooms=new JPanel();
+		rooms=viewByRoom();
+		roomText=new JPanel();
         add(calendar);
         add(text);
+        add(rooms);
+        add(roomText);
 	}
 	
 	/**
@@ -43,59 +45,70 @@ public class ReservationDayView extends ViewContent {
 	public JPanel calHeader() {
 		JPanel calHeader =new JPanel(true);
         calHeader.setLayout(new FlowLayout());
-        calHeader.setBackground(Color.WHITE);
-        calHeader.setPreferredSize(new Dimension(this.getWidth(),20));
-        
+
 		DateTimeFormatter formatter=DateTimeFormatter.ofPattern("MMMM YYY");
         JLabel month = new JLabel(formatter.format(date));
-        month.setForeground(SystemColor.activeCaption);
         
         JButton backButton = new JButton("<<");
         JButton nextButton = new JButton(">>");
         
         backButton.addActionListener(e -> {
         	date=date.minusMonths(1);
-        	this.remove(calendar);
-        	this.remove(text);
+        	remove(calendar);
+        	remove(text);
+        	remove(rooms);
+        	remove(roomText);
         	month.setText(formatter.format(date));
         	calendar=calendar();
-        	this.add(calendar);
-        	this.add(text);
+        	add(calendar);
+        	add(text);
+        	add(rooms);
+        	add(roomText);
         	this.revalidate();
         	this.repaint();
         });
         
         nextButton.addActionListener(e -> {
         	date=date.plusMonths(1);
+        	
         	remove(calendar);
         	remove(text);
+        	remove(rooms);
+        	remove(roomText);
         	month.setText(formatter.format(date));
         	calendar=calendar();
         	add(calendar);
         	add(text);
+        	add(rooms);
+        	add(roomText);
         	revalidate();
         	repaint();
         });
-        
-        calHeader.setPreferredSize(new Dimension(10,60));;
-        calHeader.add(backButton, BorderLayout.WEST);
-        calHeader.add(month, BorderLayout.CENTER);
-        calHeader.add(nextButton, BorderLayout.EAST);
+
+        calHeader.add(backButton);
+        calHeader.add(month);
+        calHeader.add(nextButton);
+        calHeader.revalidate();
+        calHeader.repaint();
         return calHeader;
 	}
 	
 	/**
-	 * Method that constructs GUI of gregorian calendar 
+	 * Method that constructs GUI of calendar 
 	 * @return JPanel of calendar
 	 */
 	public JPanel calendar() {
 		String[] days= {"Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"};
 		JPanel calendar=new JPanel(true);
 		calendar.setLayout(new BoxLayout(calendar,BoxLayout.Y_AXIS));
-		calendar.add(calHeader());
+		JLabel label=new JLabel("Reservations by Day");
+		label.setAlignmentX(CENTER_ALIGNMENT);
+		JPanel header=calHeader();
+		calendar.add(label);
+		calendar.add(header);
 		
 		JPanel calBody=new JPanel(true);
-		calBody.setPreferredSize(new Dimension((int)this.getBounds().getWidth(), this.getHeight()));
+		calBody.setPreferredSize(new Dimension((int)this.getBounds().getWidth(), this.getHeight()-80));
 		FlowLayout layout=new FlowLayout(FlowLayout.LEFT);
 		layout.setHgap(0);
 		layout.setVgap(0);
@@ -117,6 +130,7 @@ public class ReservationDayView extends ViewContent {
 		if(day!=7){
 			for(int i=0;i!=day;i++) {
 				JPanel dayPanel=new JPanel();
+				dayPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 				dayPanel.setPreferredSize(new Dimension(81,30));
 				calBody.add(dayPanel);
 			}
@@ -130,23 +144,30 @@ public class ReservationDayView extends ViewContent {
 			
 			dayPanel.addMouseListener(new MouseAdapter() {
 				public void mousePressed(MouseEvent e) {	//Click on panel display reservations for day
+					resDisplay.setText("");
 					resDate=LocalDate.of(date.getYear(), date.getMonth(), Integer.parseInt(dayLabel.getText()));
-					String res="";
+					String res="Rooms Reserved:";
 					try{
 						for(Reservation r:hrs.getReservations(resDate)) {
-							res=res+r.resDetails()+"\n";
+							res=res+"\n"+r.resDetails();
 						}
-						if(res.equals(""))
-							res="No reservations made for this day.";
+						if(res.equals("Rooms Reserved:"))
+							res="No rooms reserved for this day.";
+						else
+							res=res+"\n\nRooms Available:\n"+hrs.getAvailableRooms(resDate);
 					}
 					catch(Exception ex){
-						res="No reservations made for this day.";
+						res="No rooms reserved for this day.";
 					}
 					remove(calendar);
-					remove(text);
+		        	remove(text);
+		        	remove(rooms);
+		        	remove(roomText);
 					resDisplay.setText(res);
 					add(calendar);
-					add(text);
+		        	add(text);
+		        	add(rooms);
+		        	add(roomText);
 		        	revalidate();
 		        	repaint();
 				}
@@ -155,7 +176,75 @@ public class ReservationDayView extends ViewContent {
 			dayPanel.add(dayLabel);
 			calBody.add(dayPanel);
 		}
+		calendar.setBorder(BorderFactory.createLineBorder(Color.black));
 		calendar.add(calBody);
+		calendar.revalidate();
+		calendar.repaint();
 		return calendar;
+	}
+	
+	/**
+	 * Display of rooms available in the hotel and details for each room
+	 * @return JPanel
+	 */
+	public JPanel viewByRoom() {
+		rooms.setLayout(new BoxLayout(rooms,BoxLayout.Y_AXIS));
+		JTextArea details=new JTextArea();
+		JLabel header=new JLabel("Reservations By Room");
+		header.setAlignmentX(LEFT_ALIGNMENT);
+		
+		JPanel luxory=new JPanel();
+		luxory.setAlignmentX(LEFT_ALIGNMENT);
+		JLabel label1=new JLabel("Luxory Rooms: ");
+		luxory.add(label1);
+		for(String s:hrs.getLuxoryRooms()) {
+			JButton roomButton = new JButton(s);
+			roomButton.setPreferredSize(new Dimension(50,40));
+			roomButton.addActionListener(e -> {
+				remove(calendar);
+	        	remove(text);
+	        	remove(rooms);
+	        	remove(roomText);
+				details.setText(hrs.getResByRoom(s));
+				roomText.add(details);
+				add(calendar);
+	        	add(text);
+	        	add(rooms);
+	        	add(roomText);
+				revalidate();
+				repaint();;
+			});
+			luxory.add(roomButton);
+		}
+		
+		JPanel economic=new JPanel();
+		economic.setAlignmentX(LEFT_ALIGNMENT);
+		JLabel label2=new JLabel("Economic Rooms: ");
+		economic.add(label2);
+		for(String s:hrs.getEconomicRooms()) {
+			JButton roomButton = new JButton();
+			roomButton.setPreferredSize(new Dimension(50,40));
+			roomButton.setText(s);
+			roomButton.addActionListener(e -> {
+				remove(calendar);
+	        	remove(text);
+	        	remove(rooms);
+	        	remove(roomText);
+				details.setText(hrs.getResByRoom(s));
+				roomText.add(details);
+				add(calendar);
+	        	add(text);
+	        	add(rooms);
+	        	add(roomText);
+				revalidate();
+				repaint();
+			});
+			economic.add(roomButton);
+		}
+		rooms.setBorder(BorderFactory.createLineBorder(Color.black));
+		rooms.add(header);
+		rooms.add(luxory);
+		rooms.add(economic);
+		return rooms;
 	}
 }

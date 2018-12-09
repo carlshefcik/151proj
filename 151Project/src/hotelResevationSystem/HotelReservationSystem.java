@@ -4,11 +4,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
@@ -18,7 +17,7 @@ import javax.swing.event.ChangeListener;
  */
 public class HotelReservationSystem {
 	// static instantiation for the total rooms available
-	private static final String[] LUXORY_ROOMS = {"1","2","3","4","5","6","7","8","9","10"};
+	private static final String[] lUXORY_ROOMS = {"1","2","3","4","5","6","7","8","9","10"};
 	private static final String[] ECONOMIC_ROOMS = {"11","12","13","14","15","16","17","18","19","20"};
 	
 	private User currentUser;
@@ -45,7 +44,7 @@ public class HotelReservationSystem {
 		loadReservations();
 		loadUsers();
 	}
-	
+
 	//Getter methods
 	public String[] getLuxoryRooms() {
 		return LUXORY_ROOMS.clone();
@@ -70,6 +69,7 @@ public class HotelReservationSystem {
 		
 		return res;
 	}
+	
 	/**
 	 * Gets reservations relative to given date
 	 * @param d date
@@ -78,12 +78,13 @@ public class HotelReservationSystem {
 	public ArrayList<Reservation> getReservations(LocalDate d) {
 		ArrayList<Reservation> res=new ArrayList<Reservation>();
 		for(String key:reservations.keySet()) {
-			if(dateReserved(d,reservations.get(key)))
+			if((d.isAfter(reservations.get(key).getStartDate())&&d.isBefore(reservations.get(key).getEndDate()))
+					||d.isEqual(reservations.get(key).getStartDate())||d.isEqual(reservations.get(key).getEndDate()))
 				res.add(reservations.get(key));
 		}
 		return res;
 	}
-	
+		
 	/**
 	 * Check if room is reserved for given date
 	 * @param d date
@@ -121,19 +122,25 @@ public class HotelReservationSystem {
 		}
 		return rooms;
 	}
-	
+
 	/**
 	 * Attaches the view to the Model to cycle through the ViewContent's correctly
 	 * @param hrv the viewer to be attached
 	 */
-<<<<<<< HEAD
 	public void attachView(HotelReservationViewer hrv) {
 		this.hrv = hrv;
 	}
 	
 	/**
-	 * Logs the user in if the user and Id match
-=======
+	 * Attaches ChangeListeners to model
+	 */
+	public void attachChangeListener(ChangeListener c) {
+		listeners.add(c);
+	}
+
+	/**
+	 * Updates listeners of change in Model
+	 */
 	public void updateUser(User user) {
 		currentUser = user;
 		updateViews();
@@ -153,7 +160,6 @@ public class HotelReservationSystem {
 	public HashMap<String, Reservation> getReservations(){ return reservations; }
 
 	/** Logs the user in if the user and Id match
->>>>>>> 727f2a9142dd7297c9e5a81b2751f1fbd9da6e36
 	 * @param manager user status (manager or guest)
 	 * @param userID the id of the user
 	 * @param password the attempted user password
@@ -164,11 +170,11 @@ public class HotelReservationSystem {
 		try {
 			if(!manager&&users.get(userID).correctPassword(password)) {
 				//sets the current user and returns true
-				currentUser = users.get(userID);
+				updateUser(users.get(userID));
 				return true;
 			}
 			else if(manager&&managers.get(userID).correctPassword(password)) {
-				currentUser = managers.get(userID);
+				updateUser(users.get(managers.get(userID)));
 				return true;
 			}
 			return false;
