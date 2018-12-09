@@ -1,31 +1,4 @@
-/**
-package hotelResevationSystem;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-
-public class ViewReservations extends ViewContent {
-
-	public ViewReservations(HotelReservationSystem hrs) {
-		super(hrs);
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		JTextField tf = new JTextField();
-		tf.setText("View Reservations");
-		add(tf);
-		
-		JButton menuButton = new JButton("Guest Menu");
-		add(menuButton);
-		
-		
-		menuButton.addActionListener(e ->{
-			changeView("Guest Menu");
-		});
-		// TODO Auto-generated constructor stub
-	}
-
-}
-*/
 package hotelResevationSystem;
 
 import javax.swing.*;
@@ -34,26 +7,25 @@ import javax.swing.event.ChangeEvent;
 public class ViewReservations extends ViewContent {
 
 	private User currentUser;
+	private JTextArea message;
 	
 	public ViewReservations(HotelReservationSystem hrs) {
 		super(hrs);
 		currentUser = hrs.getCurrentUser();
 		
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		JTextField tf = new JTextField();
-		tf.setText("View Reservations");
+		JLabel tf = new JLabel("View Reservations");
 		add(tf);
 
-		hrs.sop("Repainted");
 		if(currentUser == null)
 		{
-			JLabel error = new JLabel(" Sorry, error ");
-			add(error);
+			message = new JTextArea(" Sorry, error ");
+			add(message);
 		}
 		else
 		{
-			JLabel yay = new JLabel(" Cool ");
-			add(yay);
+			message = new JTextArea(" Cool ");
+			add(message);
 		}
 		
 		JButton menuButton = new JButton("Guest Menu");
@@ -63,16 +35,23 @@ public class ViewReservations extends ViewContent {
 		menuButton.addActionListener(e ->{
 			changeView("Guest Menu");
 		});
-		
-		
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		currentUser = hrs.getCurrentUser();
-		hrs.sop("Current User: " + currentUser.getUsername());
+		repaint();
 		super.stateChanged(e);
+	}
+	
+	public void paint(Graphics g)
+	{
+		revalidate();
+		if(currentUser !=null)
+		{
+			message.setText("Hello " + currentUser.getUsername() + "\n \nReservations are below: \n\n" + currentUser.getReservations());
+		}
+		super.paintComponents(g);
 	}
 
 }
