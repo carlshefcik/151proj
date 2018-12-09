@@ -17,8 +17,8 @@ import javax.swing.event.ChangeListener;
  */
 public class HotelReservationSystem {
 	// static instantiation for the total rooms available
-	private static final String[] lUXORY_ROOMS = {"1","2","3","4","5","6","7","8","9","10"};
-	private static final String[] ECONOMIC_ROOMS = {"11","12","13","14","15","16","17","18","19","20"};
+	public static final String[] lUXORY_ROOMS = {"1","2","3","4","5","6","7","8","9","10"};
+	public static final String[] ECONOMIC_ROOMS = {"11","12","13","14","15","16","17","18","19","20"};
 	
 	private User currentUser;
 	
