@@ -27,6 +27,8 @@ public class HotelReservationViewer extends JFrame {
 		hrs.attachChangeListener(guestLogin);
 		ManagerMenu managerMenu = new ManagerMenu(hrs);
 		hrs.attachChangeListener(managerMenu);
+		NewGuest newGuest = new NewGuest(hrs);
+		hrs.attachChangeListener(newGuest);
 
 		MakeReservation makeReservation = new MakeReservation(hrs);
 		hrs.attachChangeListener(makeReservation);
@@ -53,6 +55,7 @@ public class HotelReservationViewer extends JFrame {
 		contentPane.add(dayView, "Day View");
 
 		contentPane.add(guestLogin, "Guest Login");
+		contentPane.add(newGuest, "New Guest");
 		contentPane.add(guestMenu, "Guest Menu");
 		contentPane.add(makeReservation, "Make Reservation");
 		contentPane.add(viewReservations, "View Reservations");

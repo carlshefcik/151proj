@@ -26,6 +26,11 @@ public class MainMenu extends ViewContent {
 			changeView("Guest Login");
 		});
 		
+		newGuestButton.addActionListener(e ->{
+			changeView("New Guest");
+		});
+		
+		
 		managerButton.addActionListener(e -> {
 			changeView("Manager Login");
 		});
