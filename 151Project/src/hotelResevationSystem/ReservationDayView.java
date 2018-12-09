@@ -44,6 +44,7 @@ public class ReservationDayView extends ViewContent {
 	 */
 	public JPanel calHeader() {
 		JPanel calHeader =new JPanel(true);
+		calHeader.setMaximumSize(new Dimension(1200,10));
         calHeader.setLayout(new FlowLayout());
 
 		DateTimeFormatter formatter=DateTimeFormatter.ofPattern("MMMM YYY");
