@@ -125,8 +125,8 @@ public class MakeReservation extends ViewContent{
 								LocalDate.of(endInt[2], endInt[0], endInt[1]));
 					if(!tempTi.over60()) {
 						ti = tempTi;
-						hrs.sop("Looking for avaliable rooms: " + ti.toString());
-						roomView.roomSearch(ti, luxory);
+						hrs.sop("Looking for avaliable rooms: " + tempTi.toString());
+						roomView.roomSearch(tempTi, luxory);
 					} else {
 						status.setText("Cannot have reservations lasting more than 60 days.");
 					}
@@ -186,6 +186,8 @@ public class MakeReservation extends ViewContent{
 			
 			tf = new JTextField("Avaliable Rooms: ", 10);
 			tf.setEditable(false);
+			tf.setSize(this.getWidth()/4, this.getHeight()/4);
+
 			
 			JButton c1 = new JButton("Button 1");
 			JButton c2 = new JButton("Button 2");
@@ -204,7 +206,9 @@ public class MakeReservation extends ViewContent{
 			layout1.setVerticalGroup(
 			   layout1.createSequentialGroup()
 			      .addComponent(tf)
+
 			      .addGroup(layout1.createParallelGroup(GroupLayout.Alignment.BASELINE)
+
 			           .addComponent(c1)
 			           .addComponent(c2)
 			           .addComponent(c3))
@@ -234,9 +238,9 @@ public class MakeReservation extends ViewContent{
 			if(rooms.isEmpty()) {
 				tf.setText("There are no rooms for your selected stay!");
 			} else {
-				String results = "Avaliable Rooms: \n\n";
+				String results = "Avaliable Rooms: \n";
 				for (String s : rooms) 
-					results += s;
+					results += s + ", ";
 				tf.setText(results);
 			}
 			

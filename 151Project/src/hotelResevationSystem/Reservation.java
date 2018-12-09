@@ -31,6 +31,7 @@ public class Reservation {
 		};
 		this.userID = userID;
 		this.roomNumber = roomNumber;
+		this.timeInterval = new TimeInterval(this.startDate, this.endDate);
 	}
 	
 	//getter methods
