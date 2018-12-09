@@ -126,12 +126,34 @@ public class HotelReservationSystem {
 	 * Attaches the view to the Model to cycle through the ViewContent's correctly
 	 * @param hrv the viewer to be attached
 	 */
+<<<<<<< HEAD
 	public void attachView(HotelReservationViewer hrv) {
 		this.hrv = hrv;
 	}
 	
 	/**
 	 * Logs the user in if the user and Id match
+=======
+	public void updateUser(User user) {
+		currentUser = user;
+		updateViews();
+	}
+	
+	/**
+	 * Updates all the views with new content
+	 */
+	public void updateViews() {
+		for (ChangeListener l : listeners) {
+			l.stateChanged(new ChangeEvent(this));
+		}
+	}
+	
+	//getter methods
+	public User getCurrentUser() { return currentUser; }
+	public HashMap<String, Reservation> getReservations(){ return reservations; }
+
+	/** Logs the user in if the user and Id match
+>>>>>>> 727f2a9142dd7297c9e5a81b2751f1fbd9da6e36
 	 * @param manager user status (manager or guest)
 	 * @param userID the id of the user
 	 * @param password the attempted user password

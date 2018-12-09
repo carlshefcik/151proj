@@ -20,15 +20,25 @@ public class HotelReservationViewer extends JFrame {
 		this.hrs = hrs;
 		setLocation(0,200);
 		MainMenu mainMenu = new MainMenu(hrs);
+		hrs.attachChangeListener(mainMenu);
 		GuestLogin guestLogin = new GuestLogin(hrs);
+		hrs.attachChangeListener(guestLogin);
 		GuestMenu guestMenu = new GuestMenu(hrs);
+		hrs.attachChangeListener(guestLogin);
 		ManagerMenu managerMenu = new ManagerMenu(hrs);
+		hrs.attachChangeListener(managerMenu);
+
 		MakeReservation makeReservation = new MakeReservation(hrs);
+		hrs.attachChangeListener(makeReservation);
+
 		ViewReservations viewReservations = new ViewReservations(hrs);
-		ManagerLogin managerLogin = new ManagerLogin(hrs);
-		ReservationDayView dayView = new ReservationDayView(hrs);
-		
 		hrs.attachChangeListener(viewReservations);
+
+		ManagerLogin managerLogin = new ManagerLogin(hrs);
+		hrs.attachChangeListener(managerLogin);
+
+		ReservationDayView dayView = new ReservationDayView(hrs);
+		hrs.attachChangeListener(dayView);
 
 
 		Container contentPane = this.getContentPane();

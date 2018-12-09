@@ -42,18 +42,19 @@ public class ViewReservations extends ViewContent {
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		currentUser = hrs.getCurrentUser();
+		revalidate();
+
 		repaint();
-		super.stateChanged(e);
 	}
 	
-	public void paint(Graphics g)
-	{
-		revalidate();
+	public void paintComponent(Graphics g)
+	{		
+		super.paintComponent(g);
+
 		if(currentUser !=null)
 		{
 			message.setText("Hello " + currentUser.getUsername() + "\n \nReservations are below: \n\n" + currentUser.getReservations());
 		}
-		super.paintComponents(g);
 	}
 
 }
