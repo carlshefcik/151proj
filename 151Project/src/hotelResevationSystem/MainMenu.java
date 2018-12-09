@@ -12,6 +12,7 @@ public class MainMenu extends ViewContent {
 		JTextField tf = new JTextField();
 		tf.setText("Main Menu");
 		
+		JButton newGuestButton = new JButton("Sign up");
 		JButton guestButton = new JButton("Guest Login");
 		JButton managerButton = new JButton("Manager Login");
 		
@@ -25,6 +26,11 @@ public class MainMenu extends ViewContent {
 		guestButton.addActionListener(e ->{
 			changeView("Guest Login");
 		});
+		
+		newGuestButton.addActionListener(e ->{
+			changeView("New Guest");
+		});
+		
 		
 		managerButton.addActionListener(e -> {
 			changeView("Manager Login");

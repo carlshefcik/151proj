@@ -44,6 +44,31 @@ public class HotelReservationSystem {
 		loadReservations();
 		loadUsers();
 	}
+
+	//Getter methods
+	public String[] getLuxoryRooms() {
+		return LUXORY_ROOMS.clone();
+	}
+	public String[] getEconomicRooms() {
+		return ECONOMIC_ROOMS.clone();
+	}
+	
+	/**
+	 * Get reservations by room number
+	 * @param room room number
+	 * @return	String with all reservations ties to room
+	 */
+	public String getResByRoom(String room) {
+		String res="";
+		for(String key:reservations.keySet()) {
+			if(room.equals(reservations.get(key).getRoom()))
+				res=res+reservations.get(key).roomDetails();
+		}
+		if(res.equals(""))
+			res="No reservations were made for this room";
+		
+		return res;
+	}
 	
 	/**
 	 * Gets reservations relative to given date
@@ -59,7 +84,45 @@ public class HotelReservationSystem {
 		}
 		return res;
 	}
+		
+	/**
+	 * Check if room is reserved for given date
+	 * @param d date
+	 * @param r reservation
+	 * @return boolean
+	 */
+	public boolean dateReserved(LocalDate d, Reservation r) {
+		if((d.isAfter(r.getStartDate())&&d.isBefore(r.getEndDate()))
+				||d.isEqual(r.getStartDate())||d.isEqual(r.getEndDate()))
+			return true;
+		return false;
+	}
 	
+	/**
+	 * Gets rooms that have no reservations for the given date
+	 * @param d	date
+	 * @return	list of rooms available
+	 */
+	public String getAvailableRooms(LocalDate d) {
+		ArrayList<String> roomsTaken=new ArrayList<String>();
+		for(String key:reservations.keySet()) {
+			if(!roomsTaken.contains(reservations.get(key).getRoom())&&dateReserved(d,reservations.get(key))) {
+				roomsTaken.add(reservations.get(key).getRoom());
+			}
+		}
+		String rooms="Luxory Rooms: ";
+		for(int i=0;i<LUXORY_ROOMS.length;i++) {
+			if(!roomsTaken.contains(LUXORY_ROOMS[i]))
+				rooms=rooms+LUXORY_ROOMS[i]+" ";
+		}
+		rooms=rooms+"\nEconomic Rooms: ";
+		for(int i=0;i<ECONOMIC_ROOMS.length;i++) {
+			if(!roomsTaken.contains(ECONOMIC_ROOMS[i]))
+				rooms=rooms+ECONOMIC_ROOMS[i]+" ";
+		}
+		return rooms;
+	}
+
 	/**
 	 * Attaches the view to the Model to cycle through the ViewContent's correctly
 	 * @param hrv the viewer to be attached
