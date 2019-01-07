@@ -24,7 +24,7 @@ public class ManagerMenu extends ViewContent {
 		});
 		
 		dayViewButton.addActionListener(e ->{
-			changeView("View Reservations");
+			changeView("Day View");
 		});
 		
 		// TODO Auto-generated constructor stub
